@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:newsapp/details_page.dart';
 import 'package:newsapp/profile_page.dart';
 import 'package:newsapp/search_page.dart';
 
@@ -82,8 +83,17 @@ class NewsAppState extends State<NewsApp>{
         itemBuilder: (context, index){final user = _data[index];
         final image = user['urlToImage'];
         return Padding(padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: Column(children: [
-          ClipRRect(borderRadius: BorderRadius.circular(8.0),
+        child:Material(color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsPage(
+                pass : index,
+                data : _data
+              )),);
+            },
+             child: Column (
+              children: [
+                ClipRRect(borderRadius: BorderRadius.circular(8.0),
           child: Image.network(image, width: MediaQuery.sizeOf(context).height*0.8, height: 200, fit: BoxFit.cover,),
           ),
           SizedBox(height: 10,),
@@ -91,10 +101,26 @@ class NewsAppState extends State<NewsApp>{
           style: TextStyle(fontSize: 20,
           fontWeight: FontWeight.w400,
           )),
-        ],
+          SizedBox(height: 10,),
+           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(user['author'],
+          style: TextStyle(fontSize: 15,
+          color: Colors.grey,
+          fontWeight: FontWeight.w200,
+          )),
+          Text(user['publishedAt'],
+          style: TextStyle(fontSize: 15,
+          color: Colors.grey,
+          fontWeight: FontWeight.w200,
+          )),
+            ],
+          )
+              ]
+             )
         ),
-        );
-          
+          ),
+        );         
       }), 
       ),], ),        
       bottomNavigationBar: BottomNavigationBar(
