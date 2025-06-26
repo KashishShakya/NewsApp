@@ -63,14 +63,40 @@ class NewsAppState extends State<NewsApp>{
       ),
     )]
       ),
-      body:ListView.builder(
+      body:Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+            ElevatedButton(onPressed: () {}, child: Text('Tech')),
+            ElevatedButton(onPressed: () {}, child: Text('Sports')),
+            ElevatedButton(onPressed: () {}, child: Text('Cinema')),
+          ],),
+          ),
+          SizedBox(height: 10.0),
+           Expanded(child:ListView.builder(
         itemCount: _data.length,
         itemBuilder: (context, index){final user = _data[index];
-        return ListTile(
-          title: Text(user['description']),
-          subtitle: Text(user['title']),
+        final image = user['urlToImage'];
+        return Padding(padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Column(children: [
+          ClipRRect(borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(image, width: MediaQuery.sizeOf(context).height*0.8, height: 200, fit: BoxFit.cover,),
+          ),
+          SizedBox(height: 10,),
+          Text(user['title'],
+          style: TextStyle(fontSize: 20,
+          fontWeight: FontWeight.w400,
+          )),
+        ],
+        ),
         );
-      }),
+          
+      }), 
+      ),], ),        
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
