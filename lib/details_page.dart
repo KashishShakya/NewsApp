@@ -51,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
           fontWeight: FontWeight.w400,
           )),
            SizedBox(height: 10,),
-          Text(user['description'],
+          Text(user['description']?? 'Description of news.',
           style: TextStyle(fontSize: 15,
           fontWeight: FontWeight.w200,
           )),
@@ -59,19 +59,34 @@ class _DetailsPageState extends State<DetailsPage> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
            children: [
               Padding(padding: EdgeInsets.all(8.0),
-              child: Text(user['author'],
-          style: TextStyle(fontSize: 10,
-          color: Colors.grey,
+              child: Text(user['author']?? 'Author',
+          style: TextStyle(fontSize: 15,
+          color: Color(0xFF696969),
           fontWeight: FontWeight.w200,
           )),),
           Padding(padding: EdgeInsets.all(8.0),
-          child: Text(user['publishedAt'],
-          style: TextStyle(fontSize: 10,
-          color: Colors.grey,
+          child: Text(user['publishedAt'] ?? 'Published Date',
+          style: TextStyle(fontSize: 15,
+           color: Color(0xFF696969),
           fontWeight: FontWeight.w200,
           )),)
             ],
-          )
+          ),
+          ElevatedButton(onPressed: (){
+           showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Saved to your lovely and spicy news lib.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  },
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white), child: Text('Save'))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

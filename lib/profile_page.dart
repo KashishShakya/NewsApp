@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget{
    const ProfilePage({super.key});
@@ -7,6 +9,28 @@ ProfilePageState createState() => ProfilePageState();
 
 }
 class ProfilePageState extends State<ProfilePage>{
+String? username;
+String? email;
+String? phone;
+String? date;
+
+
+@override
+void initState(){
+  super.initState();
+  loadDetails();
+}
+
+Future<void> loadDetails()async{
+final prefs = await SharedPreferences.getInstance();
+setState(() {
+    username = prefs.getString('username') ?? 'Guest';
+  email = prefs.getString('email') ?? 'Not available';
+  phone = prefs.getString('phone') ?? 'Not available';
+  date = prefs.getString('date') ?? 'Not available';
+
+  });
+}
 
   @override
   Widget build(BuildContext context){
@@ -25,38 +49,44 @@ class ProfilePageState extends State<ProfilePage>{
       children: [
         CircleAvatar(
           radius: MediaQuery.sizeOf(context).height*0.09,
-        child: Text(['name'][0],      
+        child: Text('$username'[0],      
         )),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('@user_name',
-        style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
-        fontWeight: FontWeight.w500,
-        ),),
+        // Text(LoginPageState.uNameController.text,
+        // style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        // fontWeight: FontWeight.w500,
+        // ),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.04,
         ),
-        Text('UserName',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text('$username',  style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('mailid@gmail.com',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text('$email',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('Mobile No.',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text('$phone',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('DD/MM/YYYY',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text('$date',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
-          height: MediaQuery.sizeOf(context).height*0.3,
+          height: MediaQuery.sizeOf(context).height*0.02,
         ),
+        ElevatedButton(onPressed: () async{
+          
+            var sharedPref = await SharedPreferences.getInstance();
+            sharedPref.setBool(SplashPageState.KEYNAME, false);
+        
+        }, child: Text('Logout'))
       ],
       ), 
     ),
