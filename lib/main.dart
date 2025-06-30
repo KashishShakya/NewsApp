@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/login_page.dart';
-import 'package:newsapp/home_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:newsapp/signup_page.dart';
+import 'firebase_options.dart';
 import 'dart:async';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -32,40 +36,19 @@ class SplashPage extends StatefulWidget {
 }
 
 class SplashPageState extends State<SplashPage> {
-  static const String KEYNAME = "login";
-
-  @override
+ 
+ @override
   void initState() {
     super.initState();
-    whereToGo();
-  }
-
-  void whereToGo() async {
-    final sharedPref = await SharedPreferences.getInstance();
-    final isLoggedIn = sharedPref.getBool(KEYNAME);
-
+    
     Timer(const Duration(seconds: 2), () {
-      if(isLoggedIn != null){
-         if (isLoggedIn == true) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const NewsApp()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      }
-      }
-     else{
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-     }
+        context,
+        MaterialPageRoute(builder: (context) => SignupPage()),
+      );
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

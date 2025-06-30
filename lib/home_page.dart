@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart' show rootBundle;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:newsapp/details_page.dart';
 import 'package:newsapp/profile_page.dart';
 import 'package:newsapp/search_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 // import  'package:cached_network_image/cached_network_image.dart';
 
 class NewsApp extends StatefulWidget {
@@ -19,7 +18,8 @@ class NewsAppState extends State<NewsApp>{
  int _selectedIndex =0;
  int _selectedButton = 0;
   String link='https://newsapi.org/v2/top-headlines?country=us&apiKey=391521530f6147efa81202969109ea89';
- String? username;
+ String username = 'Guest';
+ final user = FirebaseAuth.instance.currentUser;
   
   @override
   void initState() {
@@ -65,10 +65,13 @@ class NewsAppState extends State<NewsApp>{
   }
 
   Future<void> loadDetails()async{
-final prefs = await SharedPreferences.getInstance();
-setState(() {
-    username = prefs.getString('username') ?? 'Guest';
-  });
+final u = user; 
+final e = u?.email;
+String name = 'Guest';
+if(e!=null && e.contains('@')){
+  name = e.split('@')[0];
+}
+username = name;
 }
 
 
@@ -101,7 +104,7 @@ setState(() {
       },
       child: CircleAvatar(
         radius: 18,
-        child: Text('$username'[0]     
+        child: Text(username.isNotEmpty ? username[0].toUpperCase() : 'G'     
       )),
       ),
     )]

@@ -1,6 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:newsapp/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget{
    const ProfilePage({super.key});
@@ -9,10 +8,10 @@ ProfilePageState createState() => ProfilePageState();
 
 }
 class ProfilePageState extends State<ProfilePage>{
-String? username;
-String? email;
-String? phone;
-String? date;
+String username = 'Guest';
+  String email = 'No Email';
+  String uid = '';
+final user = FirebaseAuth.instance.currentUser;
 
 
 @override
@@ -22,14 +21,24 @@ void initState(){
 }
 
 Future<void> loadDetails()async{
-final prefs = await SharedPreferences.getInstance();
-setState(() {
-    username = prefs.getString('username') ?? 'Guest';
-  email = prefs.getString('email') ?? 'Not available';
-  phone = prefs.getString('phone') ?? 'Not available';
-  date = prefs.getString('date') ?? 'Not available';
+final u = user; // local alias
+    final e = u?.email;
+    final id = u?.uid;
+    
+    String name = 'Guest';
+    if (e != null && e.contains('@')) {
+      name = e.split('@')[0];
+    }
+    
+    setState(() {
+      username = name;
+      email = e ?? 'No Email';
+      uid = id ?? '';
+    });
+}
 
-  });
+Future<void> logout() async{
+  await FirebaseAuth.instance.signOut();
 }
 
   @override
@@ -49,43 +58,31 @@ setState(() {
       children: [
         CircleAvatar(
           radius: MediaQuery.sizeOf(context).height*0.09,
-        child: Text('$username'[0],      
+        child: Text(username.isNotEmpty ? username[0].toUpperCase() : 'G',      
         )),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        // Text(LoginPageState.uNameController.text,
-        // style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
-        // fontWeight: FontWeight.w500,
-        // ),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.04,
         ),
-        Text('$username',  style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text(username,  style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('$email',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text(email,style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text('$phone',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
-        fontWeight: FontWeight.w500,),),
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height*0.02,
-        ),
-        Text('$date',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+         Text('UID : $uid',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
         ElevatedButton(onPressed: () async{
-          
-            var sharedPref = await SharedPreferences.getInstance();
-            sharedPref.setBool(SplashPageState.KEYNAME, false);
-        
+        logout();
         }, child: Text('Logout'))
       ],
       ), 
