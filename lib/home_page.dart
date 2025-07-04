@@ -18,7 +18,7 @@ class NewsAppState extends State<NewsApp>{
  List<dynamic> _data =[];
  int _selectedIndex =0;
  int _selectedButton = 0;
-  String link='https://newsapi.org/v2/top-headlines?country=us&apiKey=391521530f6147efa81202969109ea89';
+  String link='https://newsapi.org/v2/top-headlines?country=us&apiKey=';
  String username = 'Guest';
  final user = FirebaseAuth.instance.currentUser;
   final Map<String, String> countries = {
