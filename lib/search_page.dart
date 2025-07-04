@@ -3,6 +3,7 @@ import 'package:newsapp/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:newsapp/details_page.dart';
+import 'package:newsapp/save_page.dart';
 
 class SearchPage extends StatefulWidget{
 const SearchPage({super.key});
@@ -52,6 +53,12 @@ void fetchdata() async{
       MaterialPageRoute(builder: (context) => NewsApp()),
     );
   } 
+  else if(index==2){
+   Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SavePage()),
+    );
+  }
    else {
     setState(() {
       _selectedIndex = index;

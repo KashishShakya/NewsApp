@@ -11,6 +11,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class SignupPageState extends State<SignupPage> {
+  TextEditingController nameController = TextEditingController();
  TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 
@@ -44,6 +45,19 @@ Future<void> registerusers() async{
         Center(
             child: SizedBox(
               width: MediaQuery.sizeOf(context).width*0.9,
+              child: TextField(controller: nameController,
+          decoration: InputDecoration(
+            label: Text('Username'),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16)
+            )
+          ),),
+            ),
+          ),
+          SizedBox(height: MediaQuery.sizeOf(context).height*0.02),
+        Center(
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width*0.9,
               child: TextField(controller: emailController,
           decoration: InputDecoration(
             label: Text('Email Id'),
@@ -69,10 +83,15 @@ Future<void> registerusers() async{
           SizedBox(height: MediaQuery.sizeOf(context).height*0.02),
           ElevatedButton(onPressed: (){ registerusers();
           }, child:Text('Sign Up')),
-          Text('Already have an account?'),
+          SizedBox(height: 15,),
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Already have an account?'),
           ElevatedButton(onPressed: (){
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
           }, child:Text('Login')),
+            ],
+          )
       ],
      ),
     );

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:newsapp/signup_page.dart';
+import 'package:newsapp/home_page.dart';
+import 'package:newsapp/login_page.dart';
 import 'firebase_options.dart';
 import 'dart:async';
 
@@ -42,10 +44,25 @@ class SplashPageState extends State<SplashPage> {
     super.initState();
     
     Timer(const Duration(seconds: 2), () {
+      final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User is signed in
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignupPage()),
+        MaterialPageRoute(builder: (context) => const NewsApp()),
       );
+    } else {
+      // User is not signed in
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    }
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder:(context, snapshot) => snapshot.hasData? NewsApp() : LoginPage() ,
+      // );
     });
   }
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:newsapp/login_page.dart';
 
 class ProfilePage extends StatefulWidget{
    const ProfilePage({super.key});
@@ -11,7 +12,6 @@ class ProfilePageState extends State<ProfilePage>{
 String username = 'Guest';
   String email = 'No Email';
   String uid = '';
-final user = FirebaseAuth.instance.currentUser;
 
 
 @override
@@ -21,24 +21,12 @@ void initState(){
 }
 
 Future<void> loadDetails()async{
-final u = user; // local alias
-    final e = u?.email;
-    final id = u?.uid;
-    
-    String name = 'Guest';
-    if (e != null && e.contains('@')) {
-      name = e.split('@')[0];
-    }
-    
-    setState(() {
-      username = name;
-      email = e ?? 'No Email';
-      uid = id ?? '';
-    });
+
 }
 
 Future<void> logout() async{
   await FirebaseAuth.instance.signOut();
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
 }
 
   @override

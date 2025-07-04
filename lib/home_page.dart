@@ -5,6 +5,7 @@ import 'package:newsapp/details_page.dart';
 import 'package:newsapp/profile_page.dart';
 import 'package:newsapp/search_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/save_page.dart';
 // import  'package:cached_network_image/cached_network_image.dart';
 
 class NewsApp extends StatefulWidget {
@@ -20,24 +21,37 @@ class NewsAppState extends State<NewsApp>{
   String link='https://newsapi.org/v2/top-headlines?country=us&apiKey=391521530f6147efa81202969109ea89';
  String username = 'Guest';
  final user = FirebaseAuth.instance.currentUser;
+  final Map<String, String> countries = {
+    'us': 'United States 🇺🇸',
+    'in': 'India 🇮🇳',
+    'gb': 'United Kingdom 🇬🇧',
+    'ca': 'Canada 🇨🇦',
+    'au': 'Australia 🇦🇺',
+    'de': 'Germany 🇩🇪',
+    'fr': 'France 🇫🇷',
+    'jp': 'Japan 🇯🇵',
+  };
+  String selectedCountryCode = 'us';
   
   @override
   void initState() {
     super.initState();
     fetchdata();
     loadDetails();
+    Future.delayed(Duration.zero, () {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Welcome!'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.deepPurple, 
+    behavior: SnackBarBehavior.floating, 
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  });
   }
 
-  // Future<void> loadjson() async{
-  //  final String jsonString = await rootBundle.loadString('assets/data.json');
-  //   final Map<String, dynamic> jsonData = jsonDecode(jsonString);
-  //   setState(() {
-  //     _data = jsonData['articles'];
-  //   });
-  // }
-
   void fetchdata() async{
-  // print('fetchdata called');
   try{
     final response = await http.get(Uri.parse(link));
     if(response.statusCode==200){
@@ -82,6 +96,12 @@ username = name;
       MaterialPageRoute(builder: (context) => SearchPage()),
     );
   } 
+  else if(index==2){
+   Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SavePage()),
+    );
+  }
    else {
     setState(() {
       _selectedIndex = index;
@@ -110,57 +130,81 @@ username = name;
     )]
       ),
       body:Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Select Country',
+          border: OutlineInputBorder(),
+        ),
+        value: selectedCountryCode,
+        items: countries.entries.map((entry) {
+          return DropdownMenuItem<String>(
+            value: entry.key,
+            child: Text(entry.value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          if (value != null) {
+            setState(() {
+              selectedCountryCode = value;
+            });
+            fetchdata();
+          }
+        },
+      ),
+    ),
+           SizedBox(height: 10,),
           SizedBox( height: 50,
           child: ListView(
            scrollDirection: Axis.horizontal,
             children: [
               ElevatedButton(onPressed: () {setState(() { _selectedButton =0;
-                link = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=391521530f6147efa81202969109ea89';
+                link = 'https://newsapi.org/v2/top-headlines?country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
               }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==0 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 0 ? Colors.white : Colors.black,
               ) ,child: Text('All')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =1;
-              link = 'https://newsapi.org/v2/top-headlines?category=technology&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=technology&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==1 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 1 ? Colors.white : Colors.black,
               ) , child: Text('Technology')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =2;
-              link = 'https://newsapi.org/v2/top-headlines?category=sports&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=sports&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==2 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 2 ? Colors.white : Colors.black,
               ) , child: Text('Sports')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =3;
-              link = 'https://newsapi.org/v2/top-headlines?category=business&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=business&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==3 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 3 ? Colors.white : Colors.black,
               ) , child: Text('Business')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =4;
-              link = 'https://newsapi.org/v2/top-headlines?category=entertainment&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=entertainment&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==4 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 4 ? Colors.white : Colors.black,
               ) , child: Text('Entertainment')),
               SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =5;
-              link = 'https://newsapi.org/v2/top-headlines?category=health&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=health&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==5 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 5 ? Colors.white : Colors.black,
               ) , child: Text('Health')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =6;
-              link = 'https://newsapi.org/v2/top-headlines?category=Science&country=us&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=Science&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==6 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 6 ? Colors.white : Colors.black,
@@ -185,7 +229,24 @@ username = name;
              child: Column (
               children: [
                 ClipRRect(borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(right, width: MediaQuery.sizeOf(context).height*0.8, height: 300, fit: BoxFit.cover,),
+          child: SizedBox(
+           width: MediaQuery.sizeOf(context).height*0.8, height: 300,
+            child: Image.network(right, fit: BoxFit.cover,
+           loadingBuilder: (context, child, loadingProgress) {
+    if (loadingProgress == null) return child;
+    return SizedBox(
+      height: 200,
+      child: Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+              : null,
+        ),
+      ),
+    );
+  },
+          ),
+          )
           ),
   //         CachedNetworkImage(
   // imageUrl: user['urlToImage'] ?? 'https://via.placeholder.com/150',
