@@ -163,49 +163,49 @@ username = name;
            scrollDirection: Axis.horizontal,
             children: [
               ElevatedButton(onPressed: () {setState(() { _selectedButton =0;
-                link = 'https://newsapi.org/v2/top-headlines?country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+                link = 'https://newsapi.org/v2/top-headlines?country=$selectedCountryCode&apiKey=';
               }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==0 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 0 ? Colors.white : Colors.black,
               ) ,child: Text('All')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =1;
-              link = 'https://newsapi.org/v2/top-headlines?category=technology&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=technology&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==1 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 1 ? Colors.white : Colors.black,
               ) , child: Text('Technology')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =2;
-              link = 'https://newsapi.org/v2/top-headlines?category=sports&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=sports&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==2 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 2 ? Colors.white : Colors.black,
               ) , child: Text('Sports')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =3;
-              link = 'https://newsapi.org/v2/top-headlines?category=business&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=business&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==3 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 3 ? Colors.white : Colors.black,
               ) , child: Text('Business')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =4;
-              link = 'https://newsapi.org/v2/top-headlines?category=entertainment&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=entertainment&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==4 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 4 ? Colors.white : Colors.black,
               ) , child: Text('Entertainment')),
               SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =5;
-              link = 'https://newsapi.org/v2/top-headlines?category=health&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=health&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==5 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 5 ? Colors.white : Colors.black,
               ) , child: Text('Health')),
                 SizedBox(width: 35),
             ElevatedButton(onPressed: () {setState(() {_selectedButton =6;
-              link = 'https://newsapi.org/v2/top-headlines?category=Science&country=$selectedCountryCode&apiKey=391521530f6147efa81202969109ea89';
+              link = 'https://newsapi.org/v2/top-headlines?category=Science&country=$selectedCountryCode&apiKey=';
             }); fetchdata();},style: ElevatedButton.styleFrom(
               backgroundColor: _selectedButton ==6 ? Colors.blue : Colors.white,
               foregroundColor: _selectedButton == 6 ? Colors.white : Colors.black,
