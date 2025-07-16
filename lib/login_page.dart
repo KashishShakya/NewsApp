@@ -3,6 +3,7 @@ import 'package:newsapp/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:newsapp/signup_page.dart';
+import 'firebase_options.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,40 +30,6 @@ void initState(){
   
 }
 
-// Future<void> googleSignIn() async {
-//   try {
-//     final GoogleSignIn googleSignIn = GoogleSignIn(
-//       scopes: <String>[
-//         'email',
-//         'https://www.googleapis.com/auth/userinfo.profile',
-//       ],
-//     );
-
-//     final GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
-
-//     if (googleAccount != null) {
-//       final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
-
-//       final AuthCredential credential = GoogleAuthProvider.credential(
-//         idToken: googleAuth.idToken,
-//         accessToken: googleAuth.accessToken,
-//       );
-
-//       await FirebaseAuth.instance.signInWithCredential(credential);
-
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (context) => NewsApp()),
-//       );
-//     }
-//   } catch (e) {
-//     print('Google Sign-In Error: $e');
-//   }
-// }
-
-
-
-
 Future<void> loginuser () async {
   try{
      await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -81,52 +48,13 @@ Future<void> loginuser () async {
 
   }
 
-Future<void> googleSignIn() async {
+Future<void> googleSignIn(BuildContext context) async {
    
-    // final GoogleSignIn  googleSignIn = GoogleSignIn(
-    //   scopes: <String>[
-    //     'email',
-    //     'https://www.googleapis.com/auth/userinfo.profile',
-    //   ],
-    // );
-    // final googleSignIn = GoogleSignIn.instance;
-    //  final googleAccount = await GoogleSignIn.instance.authenticate();
-
-  // await googleSignIn.instance.initialize(
-  //   clientId: 'YOUR_WEB_CLIENT_ID', // from Firebase Console > Web > OAuth
-  // );
-  // final googleAccount = await GoogleSignInPlatform.instance.signIn();
-  // if (googleAccount != null) {
-  //   final googleAuth = await googleAccount.authentication;
-
-  //   if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-  //     try {
-  //       name = googleAccount.displayName;
-  //       imageUrl = googleAccount.photoUrl;
-  //       email = googleAccount.email;
-
-  //       await FirebaseAuth.instance.signInWithCredential(
-  //         GoogleAuthProvider.credential(
-  //           accessToken: googleAuth.accessToken,
-  //           idToken: googleAuth.idToken,
-  //         ),
-  //       );
-  //     } on FirebaseException catch (error) {
-  //       // print(error.message);
-  //     } catch(error){
-  //       // handle error
-  //     }
-  //   } else {
-  //     // handle error
-  //   }
-  // }
-
-  // 
-  
   try {
     // 1. Initialize with your client ID
     await GoogleSignIn.instance.initialize(
-      clientId: 'jhojlpGLD9RK7IWscZcUYGYlRRr1', // Get from Firebase Console
+      clientId: DefaultFirebaseOptions.android.androidClientId,
+      // clientId: '396490676726-i2db1jcqu9p3vuc61q11onvvtlkefp27.apps.googleusercontent.com', // Get from Firebase Console
     );
 
     // 2. Start interactive auth
@@ -148,10 +76,11 @@ Future<void> googleSignIn() async {
       name = account.displayName;
       imageUrl = account.photoUrl;
       email = account.email;
-
+       
+        if (!context.mounted) return; 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const NewsApp()),
+        MaterialPageRoute(builder: (context) =>  NewsApp()),
       );
     } else {
       print("Authorization failed. No tokens returned.");
@@ -182,7 +111,7 @@ void _updateButtonState(){
           Icon(Icons.account_circle, color: Colors.blue, size: 90,),
           SizedBox(height: MediaQuery.sizeOf(context).height*0.04),
           ElevatedButton(onPressed: (){
-          googleSignIn();
+          googleSignIn(context);
           }, child: Text('Sign In with Google')),
           SizedBox(height: 25,),
           Center(

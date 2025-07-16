@@ -9,9 +9,9 @@ ProfilePageState createState() => ProfilePageState();
 
 }
 class ProfilePageState extends State<ProfilePage>{
-String username = 'Guest';
-  String email = 'No Email';
-  String uid = '';
+String? name;
+  String? email;
+  String? imgurl;
 
 
 @override
@@ -20,7 +20,13 @@ void initState(){
   loadDetails();
 }
 
-Future<void> loadDetails()async{
+void loadDetails(){
+  final user = FirebaseAuth.instance.currentUser;
+ setState(() {
+      name = user?.displayName ?? "Guest";
+      email = user?.email ?? "No Email";
+      imgurl = user?.photoURL ?? "";
+    });
 
 }
 
@@ -46,26 +52,24 @@ Future<void> logout() async{
       children: [
         CircleAvatar(
           radius: MediaQuery.sizeOf(context).height*0.09,
-        child: Text(username.isNotEmpty ? username[0].toUpperCase() : 'G',      
-        )),
+          backgroundImage: NetworkImage(imgurl ?? ""),
+        ),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.04,
         ),
-        Text(username,  style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text("Username : $name",  style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-        Text(email,style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
+        Text("Email : $email",style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
         fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),
-         Text('UID : $uid',style: TextStyle(fontSize: MediaQuery.sizeOf(context).height*0.03,
-        fontWeight: FontWeight.w500,),),
         SizedBox(
           height: MediaQuery.sizeOf(context).height*0.02,
         ),

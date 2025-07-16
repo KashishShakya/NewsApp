@@ -9,6 +9,7 @@ import 'package:newsapp/save_page.dart';
 // import  'package:cached_network_image/cached_network_image.dart';
 
 class NewsApp extends StatefulWidget {
+ 
   const NewsApp({super.key});
   @override
     NewsAppState createState() => NewsAppState();

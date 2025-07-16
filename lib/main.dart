@@ -43,22 +43,21 @@ class SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     Timer(const Duration(seconds: 2), () {
-      final user = FirebaseAuth.instance.currentUser;
+        final user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      // User is signed in
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const NewsApp()),
-      );
-    } else {
-      // User is not signed in
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    }
+        if (user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const NewsApp()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        }
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder:(context, snapshot) => snapshot.hasData? NewsApp() : LoginPage() ,
